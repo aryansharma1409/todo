@@ -3,11 +3,10 @@
 
         <!-- Logo + App Name -->
         <a href="/dashboard" class="flex items-center space-x-3 p-2 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-    <img src="{{ asset('images/logo.png') }}"
+            <img src="{{ asset('images/logo.png') }}"
          alt="ToDo Logo"
          class="h-12 w-auto object-contain rounded-md">
-</a>
-
+        </a>
         <!-- Logout Button -->
         <a href="/logout"
            class="bg-white text-pink-500 px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition">

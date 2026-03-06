@@ -7,13 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Task extends Model
 {
    protected $fillable = [
-        'title',
-        'description'
+         'title',
+    'description',
+    'due_date',
+    'completed',
+    'user_id'
     ];
         public function tasks()
-{
-    return $this->hasMany(Task::class);
-}
+        {
+            return $this->hasMany(Task::class);
+        }
 
+        public function user()
+        {
+            return $this->belongsTo(User::class);
+        }
 }
 

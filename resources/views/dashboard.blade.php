@@ -3,7 +3,6 @@
 <div class="max-w-4xl mx-auto mt-10 space-y-6">
 
 <!-- HEADER -->
-
 <div class="flex justify-between items-center">
 <h1 class="text-2xl font-bold">My Tasks</h1>
 
@@ -37,14 +36,15 @@ class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
 <div class="bg-white shadow rounded-xl p-4">
 <h2 class="text-lg font-semibold mb-4">All Tasks</h2>
 
-  <div class="grid grid-cols-3 font-semibold border-b pb-2">
+  <div class="grid grid-cols-4 font-semibold border-b pb-2">
         <div class='pl-10'>Tasks</div>
         <div>Description</div>
+        <div>Due Date</div>
         <div class="text-right">Action</div>
     </div>
 @foreach($tasks as $task)
 
-<div class="grid grid-cols-3 items-center border-b py-3">
+<div class="grid grid-cols-4 items-center border-b py-3">
 
 <!-- TASK COLUMN -->
 <div class="flex items-center gap-3">
@@ -69,6 +69,9 @@ class="w-5 h-5 border-2 rounded-full flex items-center justify-center transistio
 {{ $task->description }}
 </div>
 
+<div class="text-gray-500 {{ $task->completed ? 'line-through text-gray-400' : '' }}">
+{{ $task->due_date ?? 'No due date' }}
+</div>
 
 <!-- ACTION COLUMN -->
 <div class="flex justify-end gap-3">
@@ -87,7 +90,6 @@ Edit
 <button class="text-red-600 hover:underline text-md">
 Delete
 </button>
-
 </form>
 
 </div>
@@ -121,6 +123,13 @@ type="text"
 name="description"
 value="{{ $task->description }}"
 class="border p-2 w-full rounded mb-4"
+>
+<input
+type="date"
+name="due_date"
+value="{{ $task->due_date }}"
+class="border p-2 w-full rounded mb-4"
+required
 >
 
 <div class="flex justify-end gap-2">
@@ -179,6 +188,13 @@ type="text"
 name="description"
 placeholder="Enter Description..."
 class="border p-2 w-full rounded mb-4"
+>
+<input
+type="date"
+name="due_date"
+placeholder="Enter Due Date..."
+class="border p-2 w-full rounded mb-4"
+required
 >
 
 <div class="flex justify-end gap-2">

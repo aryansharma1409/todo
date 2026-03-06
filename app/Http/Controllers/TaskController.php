@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
@@ -11,10 +13,11 @@ class TaskController extends Controller
 
 public function index()
 {
+      $tasks = Auth::user()->tasks;
     return view('dashboard', [
-        'tasks' => Task::all(),
-        'activeCount' => Task::where('completed', false)->count(),
-        'completedCount' => Task::where('completed', true)->count()
+        'tasks' => $tasks,
+        'activeCount' => $tasks->where('completed', false)->count(),
+        'completedCount' => $tasks->where('completed', true)->count()
     ]);
 }
 
@@ -26,7 +29,9 @@ public function store()
 
     Task::create([
         'title' => request('title'),
-        'description' => request('description')
+        'description' => request('description'),
+        'due_date' => request('due_date'),
+        'user_id' => Auth::id()
     ]);
 
     return back();
@@ -36,7 +41,8 @@ public function update(Task $task)
 {
     $task->update([
         'title' => request('title'),
-        'description' => request('description')
+        'description' => request('description'),
+        'due_date' => request('due_date')
     ]);
 
     return back();
