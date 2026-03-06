@@ -1,15 +1,27 @@
 <?php
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\TaskController;
 
 
 Route::get('/login', [LoginController::class, 'index']);
 
 Route::post('/login', [LoginController::class, 'login']);
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-});
+Route::get('/logout', [LoginController::class, 'logout']);
+
+Route::get('/dashboard', [TaskController::class,'index']);
 
 Route::get('/register', [RegisterController::class,'index']);
 Route::post('/register', [RegisterController::class,'store']);
+
+
+Route::get('/', [TaskController::class,'index']);
+
+Route::post('/tasks', [TaskController::class,'store']);
+
+Route::put('/tasks/{task}', [TaskController::class,'update']);
+
+Route::delete('/tasks/{task}', [TaskController::class,'destroy']);
+
+Route::post('/tasks/{task}/toggle', [TaskController::class,'toggle']);
