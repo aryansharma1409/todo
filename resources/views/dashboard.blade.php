@@ -1,10 +1,32 @@
 <x-layout>
 
+@php
+$hour = \Carbon\Carbon::now('Asia/Kolkata')->hour;
+
+if ($hour < 12) {
+    $greeting = "Good Morning";
+} elseif ($hour < 17) {
+    $greeting = "Good Afternoon";
+} else {
+    $greeting = "Good Evening";
+}
+@endphp
+
+<div class="max-w-6xl mx-auto mt-6 px-4">
+    <div class="bg-white shadow rounded-lg p-5">
+        <h2 class="text-2xl font-bold text-center text-gray-800">
+          <u>{{ $greeting }}</u>, {{ auth()->user()->name }} 👋
+        </h2>
+        <p class="text-gray-500 text-center text-sm mt-1">
+            Welcome to your dashboard. Manage your tasks easily today.
+        </p>
+    </div>
+</div>
 <div class="max-w-4xl mx-auto mt-10 space-y-6">
 
 <!-- HEADER -->
 <div class="flex justify-between items-center">
-<h1 class="text-2xl font-bold">My Tasks</h1>
+<h1 class="text-2xl font-bold"><u>My Tasks</u></h1>
 
 <button
 onclick="openModal('createModal')"
@@ -19,7 +41,7 @@ class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
 <div class="grid grid-cols-2 gap-4">
 
 <div class="bg-white shadow rounded-xl p-6">
-<h2 class="text-gray-500 text-sm">Active Tasks</h2>
+<h2 class="text-gray-500 text-sm">Pending Tasks</h2>
 <p class="text-3xl font-bold">{{ $activeCount }}</p>
 </div>
 
@@ -34,7 +56,7 @@ class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
 <!-- TASK LIST -->
 
 <div class="bg-white shadow rounded-xl p-4">
-<h2 class="text-lg font-semibold mb-4">All Tasks</h2>
+<h2 class="text-xl text-center font-semibold mb-4"><u>All Tasks</u></h2>
 
   <div class="grid grid-cols-4 font-semibold border-b pb-2">
         <div class='pl-10'>Tasks</div>
@@ -52,14 +74,13 @@ class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
 <form method="POST" action="/tasks/{{ $task->id }}/toggle">
 @csrf
 <button
-class="w-5 h-5 border-2 rounded-full flex items-center justify-center transistion
+class="w-5 h-5 border-2 rounded-full flex items-center justify-center transition
 {{ $task->completed ? 'bg-green-500 border-green-500' : '' }}">
 </button>
 </form>
 
 <span class="font-medium {{ $task->completed ? 'line-through text-gray-400' : '' }}">
-{{ $task->title }}
-</span>
+<p>{{ ucfirst($task->title) }}</p></span>
 
 </div>
 
@@ -70,7 +91,7 @@ class="w-5 h-5 border-2 rounded-full flex items-center justify-center transistio
 </div>
 
 <div class="text-gray-500 {{ $task->completed ? 'line-through text-gray-400' : '' }}">
-{{ $task->due_date ?? 'No due date' }}
+{{ \Carbon\Carbon::parse($task->due_date)->format('F d, Y') }}
 </div>
 
 <!-- ACTION COLUMN -->
@@ -78,24 +99,29 @@ class="w-5 h-5 border-2 rounded-full flex items-center justify-center transistio
 
 <button
 onclick="openModal('editModal{{ $task->id }}')"
-class="text-blue-600 hover:underline text-md">
-Edit
+class="flex items-center text-blue-600 hover:text-blue-800">
+
+    <img src="{{ asset('images/edit.png') }}"
+         class="w-8 h-8 mr-1"
+         alt="Edit">
+
 </button>
 
 <span>|</span>
 <form method="POST" action="/tasks/{{ $task->id }}">
-@csrf
-@method('DELETE')
+    @csrf
+    @method('DELETE')
 
-<button class="text-red-600 hover:underline text-md">
-Delete
-</button>
+    <button class="text-red-600 hover:text-red-800 flex items-center">
+        <img src="{{ asset('images/delete.png') }}"
+             class="w-7 h-7"
+             alt="Delete">
+    </button>
 </form>
 
 </div>
 
 </div>
-
 
 <!-- EDIT MODAL -->
 
@@ -106,7 +132,11 @@ class="fixed inset-0 bg-black bg-opacity-40 hidden flex items-center justify-cen
 <div class="bg-white p-6 rounded-xl w-96">
 
 <h2 class="text-xl font-bold mb-4">Edit Task</h2>
-
+@if ($errors->any())
+<div class="bg-red-500 text-white p-2 rounded mb-3 text-center">
+    {{ $errors->first() }}
+</div>
+@endif
 <form method="POST" action="/tasks/{{ $task->id }}">
 @csrf
 @method('PUT')
@@ -218,9 +248,6 @@ Save
 </div>
 
 </div>
-
-
-
 <!-- MODAL SCRIPT -->
 
 <script>
@@ -234,5 +261,22 @@ document.getElementById(id).classList.add('hidden');
 }
 
 </script>
+@if(session('success'))
+<div id="toast"
+class="fixed bottom-5 right-5 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg transform transition-all duration-500 translate-y-10 opacity-0">
+    {{ session('success') }}
+</div>
+@endif
+<script>
+const toast = document.getElementById('toast');
+setTimeout(()=> {
+    toast.classList.remove('translate-y-10','opacity-0');
+},100);
 
+setTimeout(()=> {
+    toast.classList.add('opacity-0');
+},3000);
+</script>
+<br>
+<br>
 </x-layout>

@@ -18,7 +18,7 @@
 
 <!-- Email -->
 @if(session('error'))
-<div class="bg-red-700 text-black-700 p-2 rounded mb-3 text-center">
+<div class="bg-pink-300 text-black-700 p-2 rounded mb-3 text-center">
     {{ session('error') }}
 </div>
 @endif

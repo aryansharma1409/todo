@@ -34,7 +34,7 @@ public function store()
         'user_id' => Auth::id()
     ]);
 
-    return back();
+    return redirect('/tasks')->with('success', 'Task created successfully!');
 }
 
 public function update(Task $task)
@@ -45,14 +45,14 @@ public function update(Task $task)
         'due_date' => request('due_date')
     ]);
 
-    return back();
+    return redirect('/tasks')->with('success', 'Task updated successfully!');
 }
 
 public function destroy(Task $task)
 {
     $task->delete();
 
-    return back();
+    return redirect('/tasks')->with('success', 'Task deleted successfully!');
 }
 
 public function toggle(Task $task)

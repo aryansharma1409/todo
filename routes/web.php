@@ -2,6 +2,7 @@
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
 
 
 Route::get('/login', [LoginController::class, 'index']);
@@ -15,8 +16,11 @@ Route::get('/dashboard', [TaskController::class,'index']);
 Route::get('/register', [RegisterController::class,'index']);
 Route::post('/register', [RegisterController::class,'store']);
 
+Route::put('/profile/update', [UserController::class, 'update']);
 
 Route::get('/', [TaskController::class,'index']);
+
+Route::get('/tasks', [TaskController::class,'index']);
 
 Route::post('/tasks', [TaskController::class,'store']);
 
