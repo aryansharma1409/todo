@@ -11,9 +11,9 @@ Route::post('/login', [LoginController::class, 'login']);
 
 Route::get('/logout', [LoginController::class, 'logout']);
 
-Route::get('/dashboard', [TaskController::class,'index']);
+Route::get('/dashboard', [TaskController::class,'index'])->middleware('auth');
 
-Route::get('/register', [RegisterController::class,'index']);
+Route::get('/register', [RegisterController::class,'index'])->middleware('guest');
 Route::post('/register', [RegisterController::class,'store']);
 
 Route::put('/profile/update', [UserController::class, 'update']);

@@ -13,6 +13,10 @@ class TaskController extends Controller
 
 public function index()
 {
+    if(!Auth::user())
+        {
+            abort(404);
+        }
       $tasks = Auth::user()->tasks;
     return view('dashboard', [
         'tasks' => $tasks,

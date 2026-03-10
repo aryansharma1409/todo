@@ -16,12 +16,16 @@
             class="bg-white text-pink-600 px-4 py-1 rounded-lg font-semibold hover:bg-gray-100">
             Edit Profile
         </button>
-
+             @guest
+        <a href="/register"
+               class="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600 text-sm">
+               Register
+        </a>
+        @endguest
             <a href="/logout"
                class="bg-red-500 text-white px-3 py-2 rounded-md hover:bg-red-600 text-sm">
                Logout
             </a>
-
         </div>
 
     </div>
